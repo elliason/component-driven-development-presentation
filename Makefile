@@ -1,12 +1,17 @@
 include .env
 
 CURRENT_UID = $(shell id -u)
+CURRENT_GID = $(shell id -g)
+
+echo-uid:
+	echo $(CURRENT_UID)
+	echo $(CURRENT_GID)
 
 install-slidev-packages:
-	docker run --rm -v `pwd`/application:/var/www/html -u $(CURRENT_UID) $(NODE_DOCKER_IMAGE) bash -c "pnpm install";
+	docker run --rm -v `pwd`/application:/var/www/html -u $(CURRENT_UID):$(CURRENT_GID) $(NODE_DOCKER_IMAGE) bash -c "pnpm install";
 
 run-node:
-	docker run --rm -it -v `pwd`/application:/var/www/html -u $(CURRENT_UID) $(NODE_DOCKER_IMAGE) bash;
+	docker run --rm -it -v `pwd`/application:/var/www/html -u $(CURRENT_UID):$(CURRENT_GID) $(NODE_DOCKER_IMAGE) bash;
 
 build-slidev:
 	docker run --rm -v `pwd`/slidev:/var/www/html -u $(CURRENT_UID) $(NODE_DOCKER_IMAGE) bash -c "pnpm run build";
