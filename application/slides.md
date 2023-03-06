@@ -1,5 +1,4 @@
 ---
-
 # try also 'default' to start simple
 #theme: default
 theme: seriph
