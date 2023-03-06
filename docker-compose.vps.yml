@@ -13,11 +13,13 @@ services:
       - ./application:/var/www/html
     networks:
       - default
-    entrypoint: 'pnpm turbo dev'
+    entrypoint: 'pnpm dev'
     labels:
       - 'traefik.enable=true'
       - 'traefik.docker.network=${DOCKER_NETWORK}'
       - 'traefik.http.routers.${APP_ID}-slidev.rule=Host(`${APP_HOST}`)'
       - 'traefik.http.routers.${APP_ID}-slidev.entrypoints=https'
       - 'traefik.http.routers.${APP_ID}-slidev.tls=true'
-      - 'traefik.http.services.${APP_ID}-slidev.loadbalancer.server.port=3030'
+      - 'traefik.http.routers.${APP_ID}-slidev.tls.certresolver=${PRODUCTION_CERT_RESOLVER}'
+      - 'traefik.http.services.${APP_ID}-slidev.loadbalancer.server.port=3030'      
+    user: ${CURRENT_UID}
